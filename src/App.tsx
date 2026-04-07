@@ -6,10 +6,12 @@
 import { useEffect } from 'react';
 import Header from './components/layout/Header';
 import SidebarLeft from './components/layout/SidebarLeft';
-import SidebarRight from './components/layout/SidebarRight';
 import CanvasArea from './components/canvas/CanvasArea';
 import GuideModal from './components/GuideModal';
 import Timeline from './components/layout/Timeline';
+import PropertiesPanel from './components/layout/PropertiesPanel';
+import LayersPanel from './components/layout/LayersPanel';
+import ParticleLibraryPanel from './components/layout/ParticleLibraryPanel';
 import { useAppStore } from './store/useAppStore';
 
 export default function App() {
@@ -44,10 +46,12 @@ export default function App() {
         <main className="flex-1 relative bg-zinc-900 overflow-hidden flex flex-col">
           <div className="flex-1 relative flex items-center justify-center overflow-hidden">
             <CanvasArea />
+            <LayersPanel />
+            <PropertiesPanel />
+            <ParticleLibraryPanel />
           </div>
           <Timeline />
         </main>
-        <SidebarRight />
       </div>
       <GuideModal />
     </div>

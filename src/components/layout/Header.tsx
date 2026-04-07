@@ -1,5 +1,5 @@
 import { useAppStore } from '../../store/useAppStore';
-import { Download, Play, HelpCircle, Loader2 } from 'lucide-react';
+import { Download, Play, HelpCircle, Loader2, Layers, SlidersHorizontal, Image as ImageIcon } from 'lucide-react';
 import { t } from '../../i18n';
 import { useRef } from 'react';
 
@@ -8,7 +8,10 @@ export default function Header() {
     bpm, setBpm, setIsGuideOpen, 
     isRecording, setIsRecording, 
     setIsPlaying, setCurrentTime,
-    audioUrl, audioDuration, includeAudio
+    audioUrl, audioDuration, includeAudio,
+    isLayersPanelOpen, setIsLayersPanelOpen,
+    isPropertiesPanelOpen, setIsPropertiesPanelOpen,
+    isParticleLibraryOpen, setIsParticleLibraryOpen
   } = useAppStore();
 
   const handleExport = async () => {
@@ -99,6 +102,30 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2 border-r border-zinc-800 pr-6">
+          <button 
+            onClick={() => setIsLayersPanelOpen(!isLayersPanelOpen)}
+            className={`p-1.5 rounded transition-colors ${isLayersPanelOpen ? 'bg-indigo-600 text-white' : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'}`}
+            title="레이어 패널"
+          >
+            <Layers className="w-4 h-4" />
+          </button>
+          <button 
+            onClick={() => setIsPropertiesPanelOpen(!isPropertiesPanelOpen)}
+            className={`p-1.5 rounded transition-colors ${isPropertiesPanelOpen ? 'bg-indigo-600 text-white' : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'}`}
+            title="속성 패널"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+          </button>
+          <button 
+            onClick={() => setIsParticleLibraryOpen(!isParticleLibraryOpen)}
+            className={`p-1.5 rounded transition-colors ${isParticleLibraryOpen ? 'bg-indigo-600 text-white' : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'}`}
+            title="파티클 라이브러리"
+          >
+            <ImageIcon className="w-4 h-4" />
+          </button>
+        </div>
+
         <button 
           onClick={() => setIsGuideOpen(true)}
           className="flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100 transition-colors text-sm font-medium"

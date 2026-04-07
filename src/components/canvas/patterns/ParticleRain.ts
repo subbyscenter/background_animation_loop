@@ -1,5 +1,6 @@
 import { PatternRenderProps } from './types';
 import Konva from 'konva';
+import { useAppStore } from '../../../store/useAppStore';
 
 const pseudoRandom = (seed: number) => {
   const x = Math.sin(seed) * 10000;
@@ -166,6 +167,22 @@ const draw8BitInvader = (ctx: Konva.Context, x: number, y: number, r: number) =>
   drawPixelArt(ctx, x, y, r, grid);
 };
 
+// --- 이미지 캐시 ---
+const imageCache: Record<string, HTMLImageElement> = {};
+
+const getCachedImage = (url: string) => {
+  if (!imageCache[url]) {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      // Force a redraw when the image loads
+      useAppStore.getState().setCurrentTime(useAppStore.getState().currentTime);
+    };
+    imageCache[url] = img;
+  }
+  return imageCache[url];
+};
+
 // --- 메인 렌더링 함수 ---
 export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: PatternRenderProps) => {
   const w = shape.width();
@@ -173,6 +190,8 @@ export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: 
   const props = layer.customProps || {};
   const layerCount = props.layerCount || 3;
   const particleLayers = (props.particleLayers || []).slice(0, layerCount);
+  
+  const customParticles = useAppStore.getState().customParticles;
 
   context.beginPath();
   context.rect(-w / 2, -h / 2, w, h);
@@ -251,6 +270,20 @@ export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: 
         case '8bitHeart': draw8BitHeart(context, x, y, baseR); break;
         case '8bitStar': draw8BitStar(context, x, y, baseR); break;
         case '8bitInvader': draw8BitInvader(context, x, y, baseR); break;
+
+        // 커스텀 이미지
+        case 'CustomImage': {
+          if (pLayer.customImageId) {
+            const particle = customParticles.find((p: any) => p.id === pLayer.customImageId);
+            if (particle) {
+              const img = getCachedImage(particle.url);
+              if (img.complete && img.naturalWidth > 0) {
+                context.drawImage(img, x - baseR, y - baseR, baseR * 2, baseR * 2);
+              }
+            }
+          }
+          break;
+        }
 
         case 'Circle':
         default: drawCircle(context, x, y, baseR); break;

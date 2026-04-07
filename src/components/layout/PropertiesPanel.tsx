@@ -4,6 +4,8 @@ import chroma from 'chroma-js';
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
+import FloatingPanel from '../ui/FloatingPanel';
+
 const Section = ({ title, children, defaultOpen = true }: { title: string, children: React.ReactNode, defaultOpen?: boolean }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -49,7 +51,7 @@ const SliderWithInput = ({ label, value, min, max, step = 1, onChange, unit = ''
   </div>
 );
 
-export default function SidebarRight() {
+export default function PropertiesPanel() {
   const { 
     layers, selectedLayerId, updateLayer, removeLayer,
     backgroundType, setBackgroundType,
@@ -57,7 +59,8 @@ export default function SidebarRight() {
     backgroundGradient, setBackgroundGradient,
     aspectRatio, setAspectRatio,
     resolution, setResolution,
-    includeAudio, setIncludeAudio
+    includeAudio, setIncludeAudio,
+    isPropertiesPanelOpen, setIsPropertiesPanelOpen
   } = useAppStore();
   
   const selectedLayer = layers.find(l => l.id === selectedLayerId);
@@ -87,11 +90,13 @@ export default function SidebarRight() {
   };
 
   return (
-    <aside className="w-72 border-l border-zinc-800 bg-zinc-950 flex flex-col shrink-0 overflow-y-auto">
-      <div className="p-4 border-b border-zinc-800">
-        <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">{t.sidebarRight.title}</h2>
-      </div>
-      
+    <FloatingPanel 
+      title={t.sidebarRight.title} 
+      isOpen={isPropertiesPanelOpen} 
+      onClose={() => setIsPropertiesPanelOpen(false)}
+      defaultPosition={{ x: window.innerWidth - 320, y: 380 }}
+      defaultSize={{ width: 300, height: 500 }}
+    >
       <div className="flex flex-col">
         {/* Global Settings */}
         <Section title={t.sidebarRight.globalSettings}>
@@ -421,8 +426,27 @@ export default function SidebarRight() {
                             <option value="8bitStar">{t.sidebarRight.particleRain.shapes['8bitStar']}</option>
                             <option value="8bitInvader">{t.sidebarRight.particleRain.shapes['8bitInvader']}</option>
                           </optgroup>
+                          <optgroup label="커스텀">
+                            <option value="CustomImage">커스텀 이미지 (PNG)</option>
+                          </optgroup>
                         </select>
                       </div>
+
+                      {activeLayer.shapeType === 'CustomImage' && (
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs text-zinc-400">커스텀 이미지 선택</label>
+                          <select 
+                            value={activeLayer.customImageId || ''}
+                            onChange={(e) => updateParticleLayer('customImageId', e.target.value)}
+                            className="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-zinc-100 focus:outline-none focus:border-indigo-500"
+                          >
+                            <option value="">선택 안함</option>
+                            {useAppStore.getState().customParticles.map(p => (
+                              <option key={p.id} value={p.id}>{p.name}</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
 
                       <SliderWithInput 
                         label={t.sidebarRight.particleRain.count} 
@@ -533,7 +557,7 @@ export default function SidebarRight() {
           </div>
         )}
       </div>
-    </aside>
+    </FloatingPanel>
   );
 }
 

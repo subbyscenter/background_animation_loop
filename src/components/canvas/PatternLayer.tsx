@@ -60,20 +60,6 @@ export default function PatternLayer({ layer, isSelected, onSelect, onChange }: 
     shapeRef.current?.getLayer()?.batchDraw();
   }, [layer]);
 
-  const sceneFunc = (context: Konva.Context, shape: Konva.Shape) => {
-    const state = useAppStore.getState();
-    const currentTime = state.currentTime;
-    const bpm = state.bpm;
-    
-    renderPattern(layer.type, {
-      context,
-      shape,
-      layer,
-      currentTime,
-      bpm
-    });
-  };
-
   return (
     <Group>
       <Shape
@@ -83,13 +69,32 @@ export default function PatternLayer({ layer, isSelected, onSelect, onChange }: 
         width={layer.width}
         height={layer.height}
         rotation={layer.rotation}
+        offsetX={layer.width / 2}
+        offsetY={layer.height / 2}
         draggable
         onClick={onSelect}
         onTap={onSelect}
-        sceneFunc={sceneFunc}
+        sceneFunc={(context, shape) => {
+          const state = useAppStore.getState();
+          const currentTime = state.currentTime;
+          const bpm = state.bpm;
+          
+          context.save();
+          context.translate(shape.width() / 2, shape.height() / 2);
+          
+          renderPattern(layer.type, {
+            context,
+            shape,
+            layer,
+            currentTime,
+            bpm
+          });
+          
+          context.restore();
+        }}
         hitFunc={(context, shape) => {
           context.beginPath();
-          context.rect(-shape.width() / 2, -shape.height() / 2, shape.width(), shape.height());
+          context.rect(0, 0, shape.width(), shape.height());
           context.closePath();
           context.fillStrokeShape(shape);
         }}

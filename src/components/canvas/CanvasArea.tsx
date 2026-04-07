@@ -167,7 +167,7 @@ export default function CanvasArea() {
             )}
 
             {/* Patterns */}
-            {layers.map(layer => (
+            {layers.map(layer => layer.visible && (
               <PatternLayer 
                 key={layer.id} 
                 layer={layer} 

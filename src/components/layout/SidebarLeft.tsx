@@ -16,6 +16,8 @@ export default function SidebarLeft() {
   const handleAddPattern = (type: LayerType) => {
     addLayer({
       type,
+      name: type,
+      visible: true,
       x: 0, // Center of the workspace
       y: 0,
       width: 3000, // Large enough to cover any aspect ratio rotation

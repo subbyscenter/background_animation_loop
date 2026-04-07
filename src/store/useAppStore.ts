@@ -6,9 +6,17 @@ export type AspectRatio = '16:9' | '9:16' | '1:1';
 export type Resolution = 720 | 1080 | 1440 | 2160;
 export type BackgroundType = 'solid' | 'gradient';
 
+export interface CustomParticle {
+  id: string;
+  name: string;
+  url: string;
+}
+
 export interface Layer {
   id: string;
   type: LayerType;
+  name: string;
+  visible: boolean;
   x: number;
   y: number;
   width: number;
@@ -36,6 +44,19 @@ interface AppState {
   isGuideOpen: boolean;
   setIsGuideOpen: (isOpen: boolean) => void;
   
+  // Custom Particles
+  customParticles: CustomParticle[];
+  addCustomParticle: (particle: CustomParticle) => void;
+  removeCustomParticle: (id: string) => void;
+
+  // Panel States
+  isLayersPanelOpen: boolean;
+  setIsLayersPanelOpen: (isOpen: boolean) => void;
+  isPropertiesPanelOpen: boolean;
+  setIsPropertiesPanelOpen: (isOpen: boolean) => void;
+  isParticleLibraryOpen: boolean;
+  setIsParticleLibraryOpen: (isOpen: boolean) => void;
+
   // Audio & Timeline
   audioUrl: string | null;
   setAudioUrl: (url: string | null) => void;
@@ -77,6 +98,17 @@ export const useAppStore = create<AppState>()(
       isGuideOpen: false,
       setIsGuideOpen: (isGuideOpen) => set({ isGuideOpen }),
       
+      customParticles: [],
+      addCustomParticle: (particle) => set((state) => ({ customParticles: [...state.customParticles, particle] })),
+      removeCustomParticle: (id) => set((state) => ({ customParticles: state.customParticles.filter(p => p.id !== id) })),
+
+      isLayersPanelOpen: true,
+      setIsLayersPanelOpen: (isLayersPanelOpen) => set({ isLayersPanelOpen }),
+      isPropertiesPanelOpen: true,
+      setIsPropertiesPanelOpen: (isPropertiesPanelOpen) => set({ isPropertiesPanelOpen }),
+      isParticleLibraryOpen: false,
+      setIsParticleLibraryOpen: (isParticleLibraryOpen) => set({ isParticleLibraryOpen }),
+
       audioUrl: null,
       setAudioUrl: (audioUrl) => set({ audioUrl }),
       audioDuration: 0,
@@ -111,7 +143,7 @@ export const useAppStore = create<AppState>()(
         }
         
         return {
-          layers: [...state.layers, { ...layer, customProps: defaultCustomProps, id: crypto.randomUUID() }]
+          layers: [...state.layers, { ...layer, name: layer.type, visible: true, customProps: defaultCustomProps, id: crypto.randomUUID() }]
         };
       }),
       updateLayer: (id, updates) => set((state) => ({
@@ -132,7 +164,8 @@ export const useAppStore = create<AppState>()(
         backgroundGradient: state.backgroundGradient,
         bpm: state.bpm,
         aspectRatio: state.aspectRatio,
-        resolution: state.resolution
+        resolution: state.resolution,
+        customParticles: state.customParticles
       }),
     }
   )
