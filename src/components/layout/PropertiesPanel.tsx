@@ -96,10 +96,10 @@ export default function PropertiesPanel() {
       title={t.sidebarRight.title} 
       isOpen={isPropertiesPanelOpen} 
       onClose={() => setIsPropertiesPanelOpen(false)}
-      defaultPosition={{ x: window.innerWidth - 320, y: 380 }}
-      defaultSize={{ width: 300, height: 500 }}
+      defaultPosition={{ x: window.innerWidth - 320, y: 56 }}
+      defaultSize={{ width: 320, height: (window.innerHeight - 56) / 2 }}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-10">
         {/* Global Settings */}
         <Section title={t.sidebarRight.globalSettings}>
           <div className="flex flex-col gap-2">

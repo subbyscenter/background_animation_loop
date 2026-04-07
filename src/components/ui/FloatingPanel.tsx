@@ -23,7 +23,8 @@ export default function FloatingPanel({ title, children, defaultPosition, defaul
       }}
       bounds="parent"
       dragHandleClassName="panel-header"
-      className="bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl flex flex-col overflow-hidden z-50 absolute"
+      className="bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl overflow-hidden z-50 absolute"
+      style={{ display: 'flex', flexDirection: 'column' }}
       minWidth={250}
       minHeight={200}
       enableResizing={{

@@ -12,8 +12,8 @@ export default function LayersPanel() {
       title="Layers" 
       isOpen={isLayersPanelOpen} 
       onClose={() => setIsLayersPanelOpen(false)}
-      defaultPosition={{ x: window.innerWidth - 320, y: 60 }}
-      defaultSize={{ width: 300, height: 300 }}
+      defaultPosition={{ x: window.innerWidth - 320, y: 56 + (window.innerHeight - 56) / 2 }}
+      defaultSize={{ width: 320, height: (window.innerHeight - 56) / 2 }}
     >
       <div className="flex flex-col gap-1 p-2">
         {layers.slice().reverse().map((layer) => (

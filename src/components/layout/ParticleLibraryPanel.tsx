@@ -29,8 +29,8 @@ export default function ParticleLibraryPanel() {
       title="Particle Library" 
       isOpen={isParticleLibraryOpen} 
       onClose={() => setIsParticleLibraryOpen(false)}
-      defaultPosition={{ x: 300, y: 60 }}
-      defaultSize={{ width: 300, height: 500 }}
+      defaultPosition={{ x: window.innerWidth - 640, y: 56 }}
+      defaultSize={{ width: 320, height: window.innerHeight - 56 }}
     >
       <div className="p-4 flex flex-col gap-4">
         <div className="text-xs text-zinc-400 bg-zinc-900 p-3 rounded border border-zinc-800">
