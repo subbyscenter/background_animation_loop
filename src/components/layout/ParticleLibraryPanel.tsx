@@ -2,6 +2,7 @@ import { useAppStore } from '../../store/useAppStore';
 import FloatingPanel from '../ui/FloatingPanel';
 import { Upload, Trash2 } from 'lucide-react';
 import { useRef } from 'react';
+import { builtinParticles } from '../../utils/builtinParticles';
 
 export default function ParticleLibraryPanel() {
   const { customParticles, addCustomParticle, removeCustomParticle, isParticleLibraryOpen, setIsParticleLibraryOpen } = useAppStore();
@@ -29,7 +30,7 @@ export default function ParticleLibraryPanel() {
       isOpen={isParticleLibraryOpen} 
       onClose={() => setIsParticleLibraryOpen(false)}
       defaultPosition={{ x: 300, y: 60 }}
-      defaultSize={{ width: 300, height: 400 }}
+      defaultSize={{ width: 300, height: 500 }}
     >
       <div className="p-4 flex flex-col gap-4">
         <div className="text-xs text-zinc-400 bg-zinc-900 p-3 rounded border border-zinc-800">
@@ -53,9 +54,27 @@ export default function ParticleLibraryPanel() {
         />
 
         <div className="flex flex-col gap-2 mt-2">
+          <h4 className="text-xs font-semibold text-zinc-500 uppercase">src/assets/particles 폴더 (자동 로드)</h4>
+          {builtinParticles.length === 0 ? (
+            <div className="text-xs text-zinc-600 py-2">폴더에 PNG 파일이 없습니다.</div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2">
+              {builtinParticles.map(particle => (
+                <div key={particle.id} className="relative group aspect-square bg-zinc-900 border border-zinc-800 rounded overflow-hidden flex items-center justify-center p-2">
+                  <img src={particle.url} alt={particle.name} className="max-w-full max-h-full object-contain" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-[10px] text-zinc-300 truncate px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity text-center">
+                    {particle.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 mt-2">
           <h4 className="text-xs font-semibold text-zinc-500 uppercase">업로드된 파티클</h4>
           {customParticles.length === 0 ? (
-            <div className="text-sm text-zinc-600 text-center py-8">업로드된 이미지가 없습니다.</div>
+            <div className="text-xs text-zinc-600 py-2">업로드된 이미지가 없습니다.</div>
           ) : (
             <div className="grid grid-cols-3 gap-2">
               {customParticles.map(particle => (

@@ -76,6 +76,7 @@ interface AppState {
   addLayer: (layer: Omit<Layer, 'id' | 'customProps'>) => void;
   updateLayer: (id: string, updates: Partial<Layer>) => void;
   removeLayer: (id: string) => void;
+  reorderLayer: (fromIndex: number, toIndex: number) => void;
   selectedLayerId: string | null;
   setSelectedLayerId: (id: string | null) => void;
 }
@@ -153,6 +154,12 @@ export const useAppStore = create<AppState>()(
         layers: state.layers.filter(l => l.id !== id),
         selectedLayerId: state.selectedLayerId === id ? null : state.selectedLayerId
       })),
+      reorderLayer: (fromIndex, toIndex) => set((state) => {
+        const newLayers = [...state.layers];
+        const [movedLayer] = newLayers.splice(fromIndex, 1);
+        newLayers.splice(toIndex, 0, movedLayer);
+        return { layers: newLayers };
+      }),
       selectedLayerId: null,
       setSelectedLayerId: (id) => set({ selectedLayerId: id }),
     }),

@@ -6,6 +6,8 @@ import { ChevronDown } from 'lucide-react';
 
 import FloatingPanel from '../ui/FloatingPanel';
 
+import { builtinParticles } from '../../utils/builtinParticles';
+
 const Section = ({ title, children, defaultOpen = true }: { title: string, children: React.ReactNode, defaultOpen?: boolean }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -441,8 +443,11 @@ export default function PropertiesPanel() {
                             className="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-zinc-100 focus:outline-none focus:border-indigo-500"
                           >
                             <option value="">선택 안함</option>
+                            {builtinParticles.map(p => (
+                              <option key={p.id} value={p.id}>[폴더] {p.name}</option>
+                            ))}
                             {useAppStore.getState().customParticles.map(p => (
-                              <option key={p.id} value={p.id}>{p.name}</option>
+                              <option key={p.id} value={p.id}>[업로드] {p.name}</option>
                             ))}
                           </select>
                         </div>

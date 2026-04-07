@@ -1,6 +1,7 @@
 import { PatternRenderProps } from './types';
 import Konva from 'konva';
 import { useAppStore } from '../../../store/useAppStore';
+import { builtinParticles } from '../../../utils/builtinParticles';
 
 const pseudoRandom = (seed: number) => {
   const x = Math.sin(seed) * 10000;
@@ -274,7 +275,7 @@ export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: 
         // 커스텀 이미지
         case 'CustomImage': {
           if (pLayer.customImageId) {
-            const particle = customParticles.find((p: any) => p.id === pLayer.customImageId);
+            const particle = [...customParticles, ...builtinParticles].find((p: any) => p.id === pLayer.customImageId);
             if (particle) {
               const img = getCachedImage(particle.url);
               if (img.complete && img.naturalWidth > 0) {
