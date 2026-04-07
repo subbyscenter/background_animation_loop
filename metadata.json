@@ -1,0 +1,5 @@
+{
+  "name": "BPM-Synced Loop Background Generator",
+  "description": "A tool for YouTube creators to generate BPM-synced animated backgrounds with chroma key support.",
+  "requestFramePermissions": []
+}
