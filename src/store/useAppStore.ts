@@ -136,9 +136,9 @@ export const useAppStore = create<AppState>()(
         } else if (layer.type === 'ParticleRain') {
           defaultCustomProps.layerCount = 3;
           defaultCustomProps.particleLayers = [
-            { id: 'bg', name: 'Background', shapeType: 'Circle', count: 100, speed: 20, opacity: 0.3, minSize: 2, maxSize: 5, color: '#ffffff', bpmSync: 'none', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5 },
-            { id: 'mg', name: 'Midground', shapeType: 'Triangle', count: 50, speed: 50, opacity: 0.6, minSize: 5, maxSize: 12, color: '#aaaaaa', bpmSync: 'pulse', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5 },
-            { id: 'fg', name: 'Foreground', shapeType: 'Star', count: 20, speed: 100, opacity: 1.0, minSize: 15, maxSize: 30, color: '#ffff00', bpmSync: 'none', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5 },
+            { id: 'bg', name: 'Background', shapeType: 'Circle', count: 100, speed: 20, opacity: 0.3, minSize: 2, maxSize: 5, color: '#ffffff', bpmSync: 'none', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5, blur: 4 },
+            { id: 'mg', name: 'Midground', shapeType: 'Triangle', count: 50, speed: 50, opacity: 0.6, minSize: 5, maxSize: 12, color: '#aaaaaa', bpmSync: 'pulse', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5, blur: 1 },
+            { id: 'fg', name: 'Foreground', shapeType: 'Star', count: 20, speed: 100, opacity: 1.0, minSize: 15, maxSize: 30, color: '#ffff00', bpmSync: 'none', direction: 90, pulseSize: 1.5, pulseOpacity: 0.5, blur: 0 },
           ];
           defaultCustomProps.activeTab = 0;
         }
@@ -174,6 +174,7 @@ export const useAppStore = create<AppState>()(
         resolution: state.resolution,
         customParticles: state.customParticles
       }),
+      limit: 50,
     }
   )
 );

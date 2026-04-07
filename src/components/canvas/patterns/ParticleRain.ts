@@ -211,6 +211,13 @@ export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: 
     const direction = pLayer.direction ?? 90; // Default falling down
     const pulseSize = pLayer.pulseSize ?? 1.5;
     const pulseOpacity = pLayer.pulseOpacity ?? 0.5;
+    const blur = pLayer.blur || 0;
+    
+    if (blur > 0) {
+      (context as any).filter = `blur(${blur}px)`;
+    } else {
+      (context as any).filter = 'none';
+    }
     
     const baseOpacity = pLayer.opacity ?? 1;
     let currentOpacity = baseOpacity;
@@ -293,4 +300,5 @@ export const renderParticleRain = ({ context, shape, layer, currentTime, bpm }: 
   });
   
   context.globalAlpha = 1.0;
+  (context as any).filter = 'none';
 };

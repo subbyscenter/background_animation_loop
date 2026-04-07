@@ -482,6 +482,14 @@ export default function PropertiesPanel() {
                         onChange={(v) => updateParticleLayer('opacity', v)} 
                       />
 
+                      <SliderWithInput 
+                        label="흐림 효과 (Blur)" 
+                        value={activeLayer.blur || 0} 
+                        min={0} max={20} step={1} 
+                        onChange={(v) => updateParticleLayer('blur', v)} 
+                        unit="px"
+                      />
+
                       <div className="flex flex-col gap-2">
                         <div className="flex justify-between items-center">
                           <label className="text-xs text-zinc-400">{t.sidebarRight.particleRain.sizeRange}</label>
